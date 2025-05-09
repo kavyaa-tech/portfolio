@@ -5,12 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kavya - Data Analyst Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.4/babel.min.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            padding: 20px;
+            position: relative;
+            overflow-x-hidden;
+        }
+
         #particle-bg {
             position: fixed;
             top: 0;
@@ -19,357 +30,551 @@
             height: 100%;
             z-index: -1;
         }
-    </style>
-</head>
-<body class="font-['Inter'] text-[#E0E0E0] bg-[#121212] relative overflow-x-hidden">
-    <div id="root"></div>
-    <canvas id="particle-bg"></canvas>
-    <script type="text/babel">
-        const { useState, useEffect } = React;
 
-        // SkillItem Component
-        const SkillItem = ({ name, rating, index }) => (
-            <div
-                className="flex justify-between items-center bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-3 rounded-lg shadow-lg border border-[#BB86FC] transform translate-x-[-100px] opacity-0 animate-slideIn"
-                style={{ animationDelay: `${index * 0.2}s` }}
-            >
-                <span className="text-sm">{name}</span>
-                <div className="w-24 h-4 bg-[rgba(0,0,0,0.5)] rounded-full overflow-hidden border border-[#BB86FC] shadow-inner transition-all duration-500 hover:transform hover:translateZ-[10px]">
-                    <div
-                        className="h-full bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] flex items-center justify-center text-[#121212] text-xs font-bold"
-                        style={{ width: `${rating * 10}%` }}
-                    >
-                        {rating}/10
-                    </div>
-                </div>
-            </div>
-        );
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-        // ProjectItem Component (Updated to match example layout)
-        const ProjectItem = ({ name, description, image, githubLink }) => (
-            <div className="flex items-start bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-4 rounded-lg shadow-lg border border-[#BB86FC] transform transition-all duration-500 hover:transform hover:translateZ-[20px] hover:shadow-[0_12px_30px_rgba(187,134,252,0.6)] animate-slideIn">
-                <img src={image} alt={name} className="w-24 h-24 rounded-md border-2 border-[#BB86FC] mr-4" />
-                <div className="flex-1">
-                    <h4 className="font-['Poppins'] text-lg mb-1 tracking-wide text-[#E0E0E0]">{name}</h4>
-                    <p className="text-sm text-[#A0A0A0] mb-2">{description}</p>
-                    <a
-                        href={githubLink}
-                        className="inline-block px-4 py-1 bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] text-[#121212] rounded-full shadow-lg border border-[#BB86FC] transition-all duration-500 hover:transform hover:translateZ-[10px] hover:shadow-[0_10px_25px_rgba(187,134,252,0.6)] font-['Poppins'] text-sm tracking-wide"
-                    >
-                        GitHub Link
-                    </a>
-                </div>
-            </div>
-        );
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
 
-        // Main App Component
-        const App = () => {
-            // Three.js Particle Background
-            useEffect(() => {
-                const canvas = document.getElementById('particle-bg');
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+        .profile {
+            display: flex;
+            align-items: center;
+        }
 
-                renderer.setSize(window.innerWidth, window.innerHeight);
-                camera.position.z = 50;
+        .profile-info {
+            margin-right: 20px;
+        }
 
-                const particles = new THREE.Group();
-                const particleCount = 300;
-                const geometry = new THREE.SphereGeometry(0.1, 16, 16);
-                const materialPurple = new THREE.MeshBasicMaterial({ color: 0xBB86FC });
-                const materialPink = new THREE.MeshBasicMaterial({ color: 0xFF79C6 });
+        .profile-info h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            color: #BB86FC;
+            letter-spacing: 1px;
+        }
 
-                for (let i = 0; i < particleCount; i++) {
-                    const material = i % 2 === 0 ? materialPurple : materialPink;
-                    const particle = new THREE.Mesh(geometry, material);
-                    particle.position.set(
-                        (Math.random() - 0.5) * 100,
-                        (Math.random() - 0.5) * 100,
-                        (Math.random() - 0.5) * 100
-                    );
-                    particle.userData = {
-                        velocity: new THREE.Vector3(
-                            (Math.random() - 0.5) * 0.02,
-                            (Math.random() - 0.5) * 0.02,
-                            (Math.random() - 0.5) * 0.02
-                        )
-                    };
-                    particles.add(particle);
-                }
+        .profile-info p {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
 
-                scene.add(particles);
+        .photo-placeholder {
+            width: 100px;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            border: 2px solid #BB86FC;
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+            transition: all 0.5s ease;
+        }
 
-                function animate() {
-                    requestAnimationFrame(animate);
+        .photo-placeholder:hover {
+            transform: translateZ(20px) rotateY(10deg);
+        }
 
-                    particles.children.forEach(particle => {
-                        particle.position.add(particle.userData.velocity);
-                        if (particle.position.x > 50 || particle.position.x < -50) particle.userData.velocity.x *= -1;
-                        if (particle.position.y > 50 || particle.position.y < -50) particle.userData.velocity.y *= -1;
-                        if (particle.position.z > 50 || particle.position.z < -50) particle.userData.velocity.z *= -1;
-                    });
+        .nav-button {
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
 
-                    particles.rotation.y += 0.001;
-                    renderer.render(scene, camera);
-                }
+        .nav-button:hover {
+            transform: translateZ(10px);
+            box-shadow: 0 10px 25px rgba(187, 134, 252, 0.6);
+        }
 
-                animate();
+        .nav-menu {
+            display: none;
+            position: absolute;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            top: 60px;
+            right: 20px;
+        }
 
-                window.addEventListener('resize', () => {
-                    camera.aspect = window.innerWidth / window.innerHeight;
-                    camera.updateProjectionMatrix();
-                    renderer.setSize(window.innerWidth, window.innerHeight);
-                });
-            }, []);
+        .nav-menu.visible {
+            display: block;
+            opacity: 1;
+        }
 
-            return (
-                <div className="flex">
-                    {/* Sidebar Navigation */}
-                    <nav className="fixed top-0 left-0 h-full w-64 bg-[rgba(18,18,18,0.95)] backdrop-blur-lg p-6 flex flex-col gap-4 z-50 shadow-[4px_0_15px_rgba(0,0,0,0.8)] border-r-2 border-[#BB86FC]">
-                        <div className="mb-8">
-                            <h1 className="font-['Poppins'] text-2xl text-[#BB86FC] tracking-wide">Kavya</h1>
-                            <p className="text-sm text-[#A0A0A0]">Data Analyst</p>
-                        </div>
-                        <a href="#about" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">About</a>
-                        <a href="#experience" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">Experience</a>
-                        <a href="#projects" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">Projects</a>
-                        <a href="#skills" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">Skills</a>
-                        <a href="#certifications" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">Certifications</a>
-                        <a href="#contact" className="font-['Poppins'] text-lg text-[#E0E0E0] hover:text-[#BB86FC] transition-all duration-300 hover:shadow-[0_0_10px_rgba(187,134,252,0.6)]">Contact</a>
-                    </nav>
+        .nav-menu a {
+            display: block;
+            color: #E0E0E0;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
 
-                    {/* Main Content */}
-                    <div className="ml-64 p-8 w-full">
-                        {/* Hero Section */}
-                        <section id="hero" className="text-center mb-12">
-                            <img
-                                src="Kavya.jpeg"
-                                alt="Kavya's Photo"
-                                className="w-48 h-48 rounded-full border-4 border-[#BB86FC] shadow-[0_0_20px_rgba(187,134,252,0.6)] mx-auto mb-4 transition-all duration-500 hover:transform hover:translateZ-[20px]"
-                            />
-                            <h1 className="font-['Poppins'] text-4xl text-[#BB86FC] tracking-wide mb-2">Kavya</h1>
-                            <p className="text-lg text-[#A0A0A0]">Data Analyst | Transforming Data into Insights</p>
-                        </section>
-                        
-                        {/* About Section */}
-                        <section id="about" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">About Me</h2>
-                            <p className="text-lg text-[#A0A0A0] max-w-3xl mx-auto">
-                                Data Analyst with hands-on experience in SQL, ETL pipelines, AWS, and Power BI dashboards. Skilled in manipulating and transforming raw data into actionable business insights using Python and PostgreSQL. Strong collaborator committed to business transformation with a focus on data-driven decision-making.
-                            </p>
-                        </section>
+        .nav-menu a:hover {
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            transform: translateZ(10px);
+        }
 
-                        {/* Experience Section */}
-                        <section id="experience" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">Work Experience</h2>
-                            <div className="space-y-6 max-w-3xl mx-auto">
-                                <div className="bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-6 rounded-lg shadow-lg border border-[#BB86FC] transform transition-all duration-500 hover:transform hover:translateZ-[40px] hover:shadow-[0_12px_30px_rgba(187,134,252,0.6)] animate-slideIn">
-                                    <h3 className="font-['Poppins'] text-lg mb-1 tracking-wide text-[#E0E0E0]">Database Administrator</h3>
-                                    <p className="text-[#BB86FC] text-sm mb-1">Prince Capital, Chennai, Tamil Nadu</p>
-                                    <p className="text-[#A0A0A0] text-sm mb-2">Oct 2023 - Mar 2025</p>
-                                    <ul className="list-none text-[#A0A0A0] text-sm space-y-1">
-                                        <li className="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[#BB86FC]">Designed and managed database schemas for scalable relational databases.</li>
-                                        <li className="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[#BB86FC]">Developed ETL pipelines for stock market data into PostgreSQL.</li>
-                                    </ul>
-                                </div>
-                                <div className="bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-6 rounded-lg shadow-lg border border-[#BB86FC] transform transition-all duration-500 hover:transform hover:translateZ-[40px] hover:shadow-[0_12px_30px_rgba(187,134,252,0.6)] animate-slideIn">
-                                    <h3 className="font-['Poppins'] text-lg mb-1 tracking-wide text-[#E0E0E0]">AI Intern</h3>
-                                    <p className="text-[#BB86FC] text-sm mb-1">Recursive Meta, Remote</p>
-                                    <p className="text-[#A0A0A0] text-sm mb-2">Jul 2024 - Nov 2024</p>
-                                    <ul className="list-none text-[#A0A0A0] text-sm space-y-1">
-                                        <li className="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[#BB86FC]">Developed NLP-powered Text-to-SQL models using Vanna AI.</li>
-                                        <li className="relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-[#BB86FC]">Built APIs with FastAPI & Flask, integrating NLP with PostgreSQL.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </section>
+        .skill-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 10px;
+        }
 
-                        {/* Projects Section (Updated Arrangement) */}
-                        <section id="projects" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">Projects</h2>
-                            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <ProjectItem
-                                    name="E-Commerce Sales Analysis (SQL)"
-                                    description="Analyzed customer behavior and sales trends using SQL. Built Power BI dashboard with DAX measures."
-                                    image="https://via.placeholder.com/100"
-                                    githubLink="#"
-                                />
-                                <ProjectItem
-                                    name="Credit Risk Analysis (SQL)"
-                                    description="Performed credit risk analysis using SQL to query financial datasets, identifying risk patterns."
-                                    image="https://via.placeholder.com/100"
-                                    githubLink="#"
-                                />
-                                <ProjectItem
-                                    name="GenZ Dating App Analysis (Power BI)"
-                                    description="Designed Power BI dashboard for user engagement and retention. Provided recommendations."
-                                    image="https://via.placeholder.com/100"
-                                    githubLink="#"
-                                />
-                                <ProjectItem
-                                    name="Credit Risk Analysis (Python)"
-                                    description="Applied Python for statistical modeling and predictive analysis of credit risk using Pandas."
-                                    image="https://via.placeholder.com/100"
-                                    githubLink="#"
-                                />
-                            </div>
-                        </section>
+        .skill-item span {
+            flex: 0 0 150px;
+            font-size: 16px;
+            color: #E0E0E0;
+        }
 
-                        {/* Skills Section */}
-                        <section id="skills" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">Skills</h2>
-                            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <div className="flex items-center justify-center gap-2 mb-4">
-                                        <img src="https://img.icons8.com/color/48/000000/postgreesql.png" alt="Databases Icon" className="w-8 h-8" />
-                                        <h3 className="font-['Poppins'] text-lg text-[#BB86FC] tracking-wide">Databases</h3>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <SkillItem name="PostgreSQL" rating={9} index={0} />
-                                        <SkillItem name="MySQL" rating={8} index={1} />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex items-center justify-center gap-2 mb-4">
-                                        <img src="https://img.icons8.com/color/48/000000/python.png" alt="Languages Icon" className="w-8 h-8" />
-                                        <h3 className="font-['Poppins'] text-lg text-[#BB86FC] tracking-wide">Languages</h3>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <SkillItem name="Python" rating={8.5} index={0} />
-                                        <SkillItem name="SQL" rating={9} index={1} />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex items-center justify-center gap-2 mb-4">
-                                        <img src="https://img.icons8.com/color/48/000000/microsoft-power-bi.png" alt="Visualization Tools Icon" className="w-8 h-8" />
-                                        <h3 className="font-['Poppins'] text-lg text-[#BB86FC] tracking-wide">Visualization</h3>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <SkillItem name="Power BI" rating={8.5} index={0} />
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+        .skill-bar {
+            flex: 1;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #BB86FC;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-                        {/* Certifications Section */}
-                        <section id="certifications" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">Certifications</h2>
-                            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-4 rounded-lg shadow-lg border border-[#BB86FC] transform transition-all duration-500 hover:transform hover:translateZ-[40px] hover:shadow-[0_12px_30px_rgba(187,134,252,0.6)] animate-slideIn text-center">
-                                    <h3 className="font-['Poppins'] text-lg mb-1 tracking-wide text-[#E0E0E0]">Databases and SQL for Data Science with Python</h3>
-                                    <p className="text-[#A0A0A0] text-sm">IBM, Jun 2024</p>
-                                </div>
-                                <div className="bg-[rgba(255,255,255,0.05)] backdrop-blur-lg p-4 rounded-lg shadow-lg border border-[#BB86FC] transform transition-all duration-500 hover:transform hover:translateZ-[40px] hover:shadow-[0_12px_30px_rgba(187,134,252,0.6)] animate-slideIn text-center">
-                                    <h3 className="font-['Poppins'] text-lg mb-1 tracking-wide text-[#E0E0E0]">SQL (Intermediate) Certificate</h3>
-                                    <p className="text-[#A0A0A0] text-sm">HackerRank, Dec 2024</p>
-                                </div>
-                            </div>
-                        </section>
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #BB86FC, #FF79C6);
+            transition: width 1s ease-in-out;
+        }
 
-                        {/* Contact Section */}
-                        <section id="contact" className="mb-12">
-                            <h2 className="font-['Poppins'] text-3xl text-[#BB86FC] tracking-wide mb-6 text-center">Contact Me</h2>
-                            <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-4">
-                                <a
-                                    href="mailto:kavya.selvara00@gmail.com"
-                                    className="px-6 py-2 bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] text-[#121212] rounded-full shadow-lg border border-[#BB86FC] transition-all duration-500 hover:transform hover:translateZ-[30px] hover:shadow-[0_10px_25px_rgba(187,134,252,0.6)] font-['Poppins'] text-sm tracking-wide"
-                                >
-                                    Email Me
-                                </a>
-                                <a
-                                    href="https://linkedin.com"
-                                    className="px-6 py-2 bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] text-[#121212] rounded-full shadow-lg border border-[#BB86FC] transition-all duration-500 hover:transform hover:translateZ-[30px] hover:shadow-[0_10px_25px_rgba(187,134,252,0.6)] font-['Poppins'] text-sm tracking-wide"
-                                >
-                                    LinkedIn
-                                </a>
-                                <a
-                                    href="https://github.com/kavya-tech"
-                                    className="px-6 py-2 bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] text-[#121212] rounded-full shadow-lg border border-[#BB86FC] transition-all duration-500 hover:transform hover:translateZ-[30px] hover:shadow-[0_10px_25px_rgba(187,134,252,0.6)] font-['Poppins'] text-sm tracking-wide"
-                                >
-                                    GitHub
-                                </a>
-                                <a
-                                    href="resume.pdf"
-                                    download
-                                    className="px-6 py-2 bg-gradient-to-r from-[#BB86FC] to-[#FF79C6] text-[#121212] rounded-full shadow-lg border border-[#BB86FC] transition-all duration-500 hover:transform hover:translateZ-[30px] hover:shadow-[0_10px_25px_rgba(187,134,252,0.6)] font-['Poppins'] text-sm tracking-wide"
-                                >
-                                    Download Resume
-                                </a>
-                            </div>
-                        </section>
+        section {
+            margin-bottom: 40px;
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slideIn 1s ease forwards;
+        }
 
-                        {/* Footer */}
-                        <footer className="text-[#A0A0A0] text-center py-4">
-                            <p>© 2025 Kavya. All rights reserved.</p>
-                        </footer>
-                    </div>
-                </div>
-            );
-        };
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #BB86FC;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #A0A0A0;
+            padding-bottom: 5px;
+        }
 
-        // Render the App
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-    <style>
+        p, li {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #A0A0A0;
+        }
+
+        /* Vertical Timeline for Work Experience */
+        .timeline {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #BB86FC, #FF79C6);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            width: 20px;
+            height: 2px;
+            background-color: #A0A0A0;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #E0E0E0;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item p {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+
+        /* Projects, Certifications, Networking Grid */
+        .projects-grid, .certifications-grid, .networking-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .project-item, .certification-item, .networking-item {
+            width: 100%;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            border: 2px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .project-item:hover, .certification-item:hover, .networking-item:hover {
+            transform: translateZ(20px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+            border-color: #FF79C6;
+        }
+
+        .project-item a, .certification-item a, .networking-item a {
+            text-decoration: none;
+            color: #A0A0A0;
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .contact p {
+            margin: 10px 0;
+        }
+
+        .contact a {
+            color: #E0E0E0;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            color: #BB86FC;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.6);
+        }
+
+        .resume-button {
+            display: inline-block;
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #BB86FC;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.5s ease;
+        }
+
+        .resume-button:hover {
+            transform: translateZ(30px);
+            box-shadow: 0 10px 25px rgba(187, 134, 252, 0.6);
+        }
+
+        /* Animations */
         @keyframes slideIn {
             from { transform: translateX(-50px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-        .animate-slideIn {
-            animation: slideIn 1s ease forwards;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .ml-64 {
-                margin-left: 0;
-            }
-            nav {
-                position: static;
-                width: 100%;
-                height: auto;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding: 1rem;
-                border-right: none;
-                border-bottom: 2px solid #BB86FC;
-            }
-            nav a {
-                font-size: 1rem;
-                padding: 5px 10px;
-            }
-            .grid-cols-3, .grid-cols-2 {
+            .projects-grid, .certifications-grid, .networking-grid {
                 grid-template-columns: 1fr;
             }
-            .w-24.h-24 {
+
+            .skill-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .skill-item span {
+                flex: none;
+                width: 100%;
+            }
+
+            .skill-bar {
+                width: 100%;
+            }
+
+            .nav-menu {
+                top: 80px;
+                right: 10px;
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 18px;
+            }
+
+            .photo-placeholder {
                 width: 80px;
                 height: 80px;
             }
-            .flex.items-start {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .flex.items-start img {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-            .w-24.h-4 {
-                width: 100%;
-            }
-        }
-        @media (max-width: 480px) {
-            h2 {
-                font-size: 1.5rem;
-            }
-            .w-32.h-32 {
-                width: 100px;
-                height: 100px;
-            }
         }
     </style>
+</head>
+<body>
+    <canvas id="particle-bg"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="profile">
+                <div class="profile-info">
+                    <h1>Kavya</h1>
+                    <p>Data Analyst</p>
+                </div>
+                <div class="photo-placeholder"></div>
+            </div>
+            <button class="nav-button" onclick="toggleNav()">Menu</button>
+            <div class="nav-menu" id="navMenu">
+                <a href="#about" onclick="scrollToSection('about')">About Me</a>
+                <a href="#work" onclick="scrollToSection('work')">Work Experience</a>
+                <a href="#projects" onclick="scrollToSection('projects')">Projects</a>
+                <a href="#skills" onclick="scrollToSection('skills')">Skills</a>
+                <a href="#certifications" onclick="scrollToSection('certifications')">Certifications</a>
+                <a href="#networking" onclick="scrollToSection('networking')">Networking</a>
+                <a href="#education" onclick="scrollToSection('education')">Education</a>
+                <a href="#contact" onclick="scrollToSection('contact')">Contact Me</a>
+            </div>
+        </header>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Data Analyst with hands-on experience in SQL, ETL pipelines, AWS, and Power BI dashboards. Skilled in manipulating and transforming raw data into actionable business insights using Python and PostgreSQL. Experienced in translating SQL queries into business logic, maintaining data quality, and documenting workflows with clarity. Familiar with AWS services. Strong collaborator committed to business transformation with a focus on business impact and data-driven decision-making.</p>
+        </section>
+
+        <section id="work">
+            <h2>Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Database Administrator</h3>
+                    <p>Prince Capital, Chennai, Tamil Nadu<br>Oct 2023 - Mar 2025</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>AI Intern</h3>
+                    <p>Recursive Meta, Remote<br>Jul 2024 - Nov 2024</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Quality Control Chemist</h3>
+                    <p>Sharmagha Bio Fuels, Erode, Tamil Nadu<br>Sep 2020 - Feb 2022</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div>
+                    <a href="https://github.com/kavyaa-tech/credit-risk-prediction" target="_blank">
+                        <div class="project-item"></div>
+                        <p>Credit Risk Prediction App</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/kavyaa-tech/genz-dating-analysis" target="_blank">
+                        <div class="project-item"></div>
+                        <p>GenZ Dating App Analysis</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/kavyaa-tech" target="_blank">
+                        <div class="project-item"></div>
+                        <p>Placeholder Project</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skill-item">
+                <span>SQL</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 95%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Python</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Excel</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Power BI</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>AWS (S3, RDS, EC2, etc.)</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 65%;"></div></div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <div class="certifications-grid">
+                <div>
+                    <div class="certification-item"></div>
+                    <p>Databases and SQL for Data Science with Python (IBM)</p>
+                </div>
+                <div>
+                    <div class="certification-item"></div>
+                    <p>SQL (Intermediate) Certificate (HackerRank)</p>
+                </div>
+                <div>
+                    <div class="certification-item"></div>
+                    <p>Introduction to Data Analytics (IBM)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="networking">
+            <h2>Networking</h2>
+            <div class="networking-grid">
+                <div>
+                    <div class="networking-item"></div>
+                    <p>Event 1</p>
+                </div>
+                <div>
+                    <div class="networking-item"></div>
+                    <p>Event 2</p>
+                </div>
+                <div>
+                    <div class="networking-item"></div>
+                    <p>Event 3</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <p>Bachelor of Science in Chemistry<br>Vellalar College for Women, Erode, Tamil Nadu<br>Jun 2017 - Sep 2020</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <div class="contact">
+                <p>Email: <a href="mailto:kavya.selvaraj00@gmail.com">kavya.selvaraj00@gmail.com</a></p>
+                <p>Phone: <a href="tel:+916382062189">+91 6382062189</a></p>
+                <p>GitHub: <a href="https://github.com/kavyaa-tech" target="_blank">github.com/kavyaa-tech</a></p>
+                <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+                <a href="#" class="resume-button">Download Resume</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleNav() {
+            const navMenu = document.getElementById('navMenu');
+            const isVisible = navMenu.style.display === 'block';
+            navMenu.style.display = isVisible ? 'none' : 'block';
+            navMenu.classList.toggle('visible', !isVisible);
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+            toggleNav();
+        }
+
+        // Three.js Particle Background
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('particle-bg');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.z = 50;
+
+            const particles = new THREE.Group();
+            const particleCount = 300;
+            const geometry = new THREE.SphereGeometry(0.1, 16, 16);
+            const materialPurple = new THREE.MeshBasicMaterial({ color: 0xBB86FC });
+            const materialPink = new THREE.MeshBasicMaterial({ color: 0xFF79C6 });
+
+            for (let i = 0; i < particleCount; i++) {
+                const material = i % 2 === 0 ? materialPurple : materialPink;
+                const particle = new THREE.Mesh(geometry, material);
+                particle.position.set(
+                    (Math.random() - 0.5) * 100,
+                    (Math.random() - 0.5) * 100,
+                    (Math.random() - 0.5) * 100
+                );
+                particle.userData = {
+                    velocity: new THREE.Vector3(
+                        (Math.random() - 0.5) * 0.02,
+                        (Math.random() - 0.5) * 0.02,
+                        (Math.random() - 0.5) * 0.02
+                    )
+                };
+                particles.add(particle);
+            }
+
+            scene.add(particles);
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                particles.children.forEach(particle => {
+                    particle.position.add(particle.userData.velocity);
+                    if (particle.position.x > 50 || particle.position.x < -50) particle.userData.velocity.x *= -1;
+                    if (particle.position.y > 50 || particle.position.y < -50) particle.userData.velocity.y *= -1;
+                    if (particle.position.z > 50 || particle.position.z < -50) particle.userData.velocity.z *= -1;
+                });
+
+                particles.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+    </script>
 </body>
 </html>
