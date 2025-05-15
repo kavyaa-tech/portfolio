@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavya - Data Analyst Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle, #1a1a1a 0%, #121212 100%);
+            color: #E0E0E0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-info {
+            margin-right: 20px;
+        }
+
+        .profile-info h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            color: #BB86FC;
+            letter-spacing: 1px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid #BB86FC;
+            box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+            transition: all 0.5s ease;
+            object-fit: cover;
+        }
+
+        .profile-photo:hover {
+            transform: translateZ(20px) rotateY(10deg);
+        }
+
+        .nav-button {
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateZ(10px);
+            box-shadow: 0 10px 25px rgba(187, 134, 252, 0.6);
+        }
+
+        .nav-menu {
+            display: none;
+            position: absolute;
+            background: linear-gradient(135deg, #1E1E1E 0%, #2A2A2A 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateY(-10px);
+            min-width: 200px;
+        }
+
+        .nav-menu.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-menu a {
+            display: block;
+            color: #E0E0E0;
+            padding: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+
+        .nav-menu a:hover {
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            transform: translateX(5px);
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            gap: 10px;
+        }
+
+        .skill-item span {
+            flex: 0 0 150px;
+            font-size: 16px;
+            color: #E0E0E0;
+        }
+
+        .skill-bar {
+            flex: 1;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid #BB86FC;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #BB86FC, #FF79C6);
+            transition: width 1s ease-in-out;
+        }
+
+        section {
+            margin-bottom: 40px;
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slideIn 1s ease forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #BB86FC;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #A0A0A0;
+            padding-bottom: 5px;
+        }
+
+        #projects h2,
+        #networking h2 {
+            border-bottom: none;
+        }
+
+        p, li {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #A0A0A0;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #BB86FC, #FF79C6);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateZ(40px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 10px;
+            width: 20px;
+            height: 2px;
+            background-color: #A0A0A0;
+        }
+
+        .timeline-item h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #E0E0E0;
+            letter-spacing: 1px;
+        }
+
+        .timeline-item p {
+            font-size: 14px;
+            color: #A0A0A0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .project-item {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 5px;
+            border: 2px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            object-fit: contain;
+            background-color: #1E1E1E;
+            padding: 10px;
+        }
+
+        .project-item:hover {
+            transform: translateZ(20px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+            border-color: #FF79C6;
+        }
+
+        .project-item a, .certification-item a, .networking-item a {
+            text-decoration: none;
+            color: #A0A0A0;
+            display: block;
+            text-align: center;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .certifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .certification-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .certification-item:hover {
+            transform: translateZ(20px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+            border-color: #FF79C6;
+        }
+
+        .certification-item a {
+            color: #E0E0E0;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .certification-item a:hover {
+            color: #BB86FC;
+        }
+
+        .networking-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .networking-item {
+            width: 100%;
+            height: 200px;
+            border-radius: 5px;
+            border: 2px solid #BB86FC;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            object-fit: cover;
+        }
+
+        .networking-item:hover {
+            transform: translateZ(20px);
+            box-shadow: 0 12px 30px rgba(187, 134, 252, 0.6);
+            border-color: #FF79C6;
+        }
+
+        .contact p {
+            margin: 10px 0;
+        }
+
+        .contact a {
+            color: #E0E0E0;
+            text-decoration: none;
+        }
+
+        .contact a:hover {
+            color: #BB86FC;
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.6);
+        }
+
+        .resume-button {
+            display: inline-block;
+            background: linear-gradient(to right, #BB86FC, #FF79C6);
+            color: #121212;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #BB86FC;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.5s ease;
+        }
+
+        .resume-button:hover {
+            transform: translateZ(30px);
+            box-shadow: 0 10px 25px rgba(187, 134, 252, 0.6);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid, .networking-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .skill-item span {
+                flex: none;
+                width: 100%;
+            }
+
+            .skill-bar {
+                width: 100%;
+            }
+
+            .nav-menu {
+                top: 80px;
+                right: 10px;
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 18px;
+            }
+
+            .profile-photo {
+                width: 90px;
+                height: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-bg"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="profile">
+                <div class="profile-info">
+                    <h1>Kavya</h1>
+                    <p>Data Analyst</p>
+                </div>
+                <img src="kavya.jpeg" alt="Kavya's Profile Photo" class="profile-photo">
+            </div>
+            <button class="nav-button" onclick="toggleNav()">Menu</button>
+            <div class="nav-menu" id="navMenu">
+                <a href="#about" onclick="scrollToSection('about')">About Me</a>
+                <a href="#work" onclick="scrollToSection('work')">Work Experience</a>
+                <a href="#projects" onclick="scrollToSection('projects')">Projects</a>
+                <a href="#skills" onclick="scrollToSection('skills')">Skills</a>
+                <a href="#certifications" onclick="scrollToSection('certifications')">Certifications</a>
+                <a href="#networking" onclick="scrollToSection('networking')">Networking</a>
+                <a href="#education" onclick="scrollToSection('education')">Education</a>
+                <a href="#contact" onclick="scrollToSection('contact')">Contact Me</a>
+            </div>
+        </header>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Data Analyst with hands-on experience in SQL, ETL pipelines, AWS, and Power BI dashboards. Skilled in manipulating and transforming raw data into actionable business insights using Python and PostgreSQL. Experienced in translating SQL queries into business logic, maintaining data quality, and documenting workflows with clarity. Familiar with AWS services. Strong collaborator committed to business transformation with a focus on business impact and data-driven decision-making.</p>
+        </section>
+
+        <section id="work">
+            <h2>Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Database Administrator</h3>
+                    <p>Prince Capital, Chennai, Tamil Nadu<br>Oct 2023 - Mar 2025</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>AI Intern</h3>
+                    <p>Recursive Meta, Remote<br>Jul 2024 - Nov 2024</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Quality Control Chemist</h3>
+                    <p>Sharmagha Bio Fuels, Erode, Tamil Nadu<br>Sep 2020 - Feb 2022</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div>
+                    <a href="https://github.com/kavyaa-tech/credit_risk_app" target="_blank">
+                        <img src="Credit_risk.png" alt="Credit Risk Prediction" class="project-item">
+                        <p>Credit Risk Prediction App</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/kavyaa-tech/GenZ_Dating_App_Analysis" target="_blank">
+                        <img src="genz.png" alt="GenZ Dating Analysis" class="project-item">
+                        <p>GenZ Dating App Analysis</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/kavyaa-tech/employee-wellness-insights" target="_blank">
+                        <img src="Employee.png" alt="Employee Wellness Insights" class="project-item">
+                        <p>Employee Wellness Insights</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/kavyaa-tech/EV_Sales" target="_blank">
+                        <img src="ev.png" alt="EV Sales Analysis" class="project-item">
+                        <p>EV Sales Analysis</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <div class="skill-item">
+                <span>SQL</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 95%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Python</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Excel</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>Power BI</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="skill-item">
+                <span>AWS (S3, RDS, EC2, etc.)</span>
+                <div class="skill-bar"><div class="skill-fill" style="width: 65%;"></div></div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <div class="certifications-list">
+                <div class="certification-item">
+                    <a href="https://www.coursera.org/account/accomplishments/verify/RH2A6F5ZKEWN" target="_blank">
+                        Databases and SQL for Data Science with Python (IBM)
+                    </a>
+                </div>
+                <div class="certification-item">
+                    <a href="https://www.hackerrank.com/certificates/1ba8768571fb" target="_blank">
+                        SQL (Intermediate) Certificate (HackerRank)
+                    </a>
+                </div>
+                <div class="certification-item">
+                    <a href="https://www.coursera.org/account/accomplishments/verify/WW6CYV6ONKFO" target="_blank">
+                        Introduction to Data Analytics (IBM)
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="networking">
+            <h2>Networking</h2>
+            <div class="networking-grid">
+                <div>
+                    <a href="https://www.linkedin.com/posts/kavya-dataprofessional_ai-llms-aiagents-activity-7274482295929991168-fmQs?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1tJxUBss09XucC0pq4zYt1UvllexDQLiQ" target="_blank">
+                        <img src="llms.jpeg" alt="Exploring the World of LLMs" class="networking-item">
+                        <p>Exploring the World of LLMs</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://www.linkedin.com/posts/kavya-dataprofessional_ai-genai-dataplatforms-activity-7303385816548950017-TM2a?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1tJxUBss09XucC0pq4zYt1UvllexDQLiQ" target="_blank">
+                        <img src="ford.jpeg" alt="Data Silos to Data For All in the Gen AI Era" class="networking-item">
+                        <p>Data Silos to Data For All in the Gen AI Era</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="https://www.linkedin.com/posts/kavya-dataprofessional_ai-machinelearning-generativeai-activity-7322190789613129728-DFT5?utm_source=share&utm_medium=member_desktop&rcm=ACoAAE1tJxUBss09XucC0pq4zYt1UvllexDQLiQ" target="_blank">
+                        <img src="tech conf.png" alt="AI & Data Science Collective 2025 - Chennai meetup" class="networking-item">
+                        <p>AI & Data Science Collective 2025 - Chennai meetup</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <p>Bachelor of Science in Chemistry<br>Vellalar College for Women, Erode, Tamil Nadu<br>Jun 2017 - Sep 2020</p>
+        </section>
+
+        <section id="contact">
+            <h2>Contact Me</h2>
+            <div class="contact">
+                <p>Email: <a href="mailto:kavya.selvaraj00@gmail.com">kavya.selvaraj00@gmail.com</a></p>
+                <p>Phone: <a href="tel:+916382062Vellalar College for Women, Erode, Tamil Nadu</a></p>
+                <p>GitHub: <a href="https://github.com/kavyaa-tech" target="_blank">github.com/kavyaa-tech</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/kavya-data-dataprofessional" target="_blank">linkedin.com/in/kavya-data-dataprofessional</a></p>
+                <a href="Kavya_DataAnalyst.pdf" download class="resume-button">Download Resume</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function toggleNav() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('visible');
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+            toggleNav();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('particle-bg');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.position.z = 50;
+
+            const particles = new THREE.Group();
+            const particleCount = 300;
+            const geometry = new THREE.SphereGeometry(0.1, 16, 16);
+            const materialPurple = new THREE.MeshBasicMaterial({ color: 0xBB86FC });
+            const materialPink = new THREE.MeshBasicMaterial({ color: 0xFF79C6 });
+
+            for (let i = 0; i < particleCount; i++) {
+                const material = i % 2 === 0 ? materialPurple : materialPink;
+                const particle = new THREE.Mesh(geometry, material);
+                particle.position.set(
+                    (Math.random() - 0.5) * 200,
+                    (Math.random() - 0.5) * 200,
+                    (Math.random() - 0.5) * 200
+                );
+                particle.userData = {
+                    velocity: new THREE.Vector3(
+                        (Math.random() - 0.5) * 0.02,
+                        (Math.random() - 0.5) * 0.02,
+                        (Math.random() - 0.5) * 0.02
+                    )
+                };
+                particles.add(particle);
+            }
+
+            scene.add(particles);
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                particles.children.forEach(particle => {
+                    particle.position.add(particle.userData.velocity);
+                    if (particle.position.x > 100 || particle.position.x < -100) particle.userData.velocity.x *= -1;
+                    if (particle.position.y > 100 || particle.position.y < -100) particle.userData.velocity.y *= -1;
+                    if (particle.position.z > 100 || particle.position.z < -100) particle.userData.velocity.z *= -1;
+                });
+
+                particles.rotation.y += 0.001;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+    </script>
+</body>
+</html>
