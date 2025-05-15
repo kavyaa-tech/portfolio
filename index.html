@@ -222,7 +222,7 @@
         .timeline-item {
             position: relative;
             margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 250, 0.05);
             backdrop-filter: blur(10px);
             padding: 16px;
             border-radius: 8px;
@@ -387,9 +387,33 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        /* Responsive Adjustments for Mobile */
         @media (max-width: 768px) {
             .projects-grid, .networking-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+
+            .project-item {
+                padding: 15px; /* Increase padding for better spacing */
+                aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+                width: 100%; /* Ensure it takes full width */
+                max-width: 400px; /* Prevent it from becoming too wide */
+                margin: 0 auto; /* Center the item */
+            }
+
+            .project-item a {
+                font-size: 1.2rem; /* Increase font size for project text */
+            }
+
+            .networking-item {
+                height: 250px; /* Increase height for better visibility */
+                width: 100%; /* Ensure it takes full width */
+                max-width: 400px; /* Prevent it from becoming too wide */
+                margin: 0 auto; /* Center the item */
+            }
+
+            .networking-item a {
+                font-size: 1.2rem; /* Increase font size for networking text */
             }
 
             .skill-item {
@@ -400,6 +424,7 @@
             .skill-item span {
                 flex: none;
                 width: 100%;
+                font-size: 1.1rem; /* Slightly smaller on mobile */
             }
 
             .skill-bar {
@@ -407,20 +432,97 @@
             }
 
             .nav-menu {
-                top: 80px;
+                top: 100px; /* Adjust position for mobile */
                 right: 10px;
-                width: 200px;
+                width: 220px; /* Slightly wider menu */
+            }
+
+            .nav-menu a {
+                font-size: 1.2rem; /* Increase font size for menu items */
+                padding: 12px; /* More padding for touch targets */
+            }
+
+            .nav-button {
+                font-size: 1.2rem; /* Increase font size for menu button */
+                padding: 12px 24px; /* Larger touch target */
+            }
+
+            .profile-info h1 {
+                font-size: 2rem; /* Increase font size for "Kavya" */
+            }
+
+            .profile-info p {
+                font-size: 1.2rem; /* Increase font size for "Data Analyst" */
+            }
+
+            .profile-photo {
+                width: 150px; /* Increase size of profile photo */
+                height: 150px;
+            }
+
+            p, li {
+                font-size: 1rem; /* Reduce font size for other texts to balance */
+            }
+
+            h2 {
+                font-size: 1.5rem; /* Reduce section headings to balance */
+            }
+
+            .timeline-item h3 {
+                font-size: 1.2rem; /* Adjust timeline headings */
+            }
+
+            .timeline-item p {
+                font-size: 0.9rem; /* Adjust timeline text */
+            }
+
+            .certification-item a {
+                font-size: 1.1rem; /* Adjust certification links */
+            }
+
+            .resume-button {
+                font-size: 1.2rem; /* Increase font size for resume button */
+                padding: 12px 24px; /* Larger touch target */
+            }
+
+            .contact p {
+                font-size: 1rem; /* Adjust contact text */
             }
         }
 
         @media (max-width: 480px) {
-            h2 {
-                font-size: 18px;
+            .profile-info h1 {
+                font-size: 1.8rem; /* Slightly smaller for very small screens */
+            }
+
+            .profile-info p {
+                font-size: 1rem; /* Adjust "Data Analyst" text */
             }
 
             .profile-photo {
-                width: 90px;
-                height: 90px;
+                width: 120px; /* Slightly smaller for very small screens */
+                height: 120px;
+            }
+
+            .nav-menu a {
+                font-size: 1.1rem; /* Adjust menu items */
+            }
+
+            .project-item a, .networking-item a {
+                font-size: 1rem; /* Adjust project and networking text */
+            }
+
+            h2 {
+                font-size: 1.3rem; /* Further reduce section headings */
+            }
+
+            p, li {
+                font-size: 0.9rem; /* Further reduce other texts */
+            }
+
+            .resume-button {
+                font-size: 1.1rem; /* Adjust resume button */
+                padding: 10px 20px; /* Adjust padding */
             }
         }
     </style>
@@ -585,7 +687,7 @@
                 <p>GitHub: <a href="https://github.com/kavyaa-tech" target="_blank">github.com/kavyaa-tech</a></p>
                 <p>LinkedIn: <a href="https://www.linkedin.com/in/kavya-data-dataprofessional" target="_blank">linkedin.com/in/kavya-data-dataprofessional</a></p>
                 <a href="Kavya_DataAnalyst.pdf" download class="resume-button">Download Resume</a>
-            </div>
+             </div>
         </section>
     </div>
 
