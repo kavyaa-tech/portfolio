@@ -173,6 +173,49 @@
             transition: width 1s ease-in-out;
         }
 
+        /* Skills Section */
+        #skills {
+            text-align: left;
+        }
+
+        .skills-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .skill-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 10px rgba(187, 134, 252, 0.1);
+        }
+
+        .skill-box:hover {
+            transform: translateY(-5px);
+            border-color: #bb86fc;
+            box-shadow: 0 8px 20px rgba(187, 134, 252, 0.3);
+        }
+
+        .skill-box h3 {
+            color: #BB86FC;
+            font-family: "Poppins", sans-serif;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .skill-box p {
+            font-size: 14px;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
         section {
             margin-bottom: 40px;
             transform: translateX(-50px);
@@ -416,21 +459,6 @@
                 font-size: 1.2rem; /* Increase font size for networking text */
             }
 
-            .skill-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .skill-item span {
-                flex: none;
-                width: 100%;
-                font-size: 1.1rem; /* Slightly smaller on mobile */
-            }
-
-            .skill-bar {
-                width: 100%;
-            }
-
             .nav-menu {
                 top: 100px; /* Adjust position for mobile */
                 right: 10px;
@@ -535,7 +563,7 @@
             <div class="profile">
                 <div class="profile-info">
                     <h1>Kavya</h1>
-                    <p>Data Analyst</p>
+                    <p>AI Engineer</p>
                 </div>
                 <img src="kavya.jpeg" alt="Kavya's Profile Photo" class="profile-photo">
             </div>
@@ -554,23 +582,32 @@
 
         <section id="about">
             <h2>About Me</h2>
-            <p>Data Analyst with hands-on experience in SQL, ETL pipelines, AWS, and Power BI dashboards. Skilled in manipulating and transforming raw data into actionable business insights using Python and PostgreSQL. Experienced in translating SQL queries into business logic, maintaining data quality, and documenting workflows with clarity. Familiar with AWS services. Strong collaborator committed to business transformation with a focus on business impact and data-driven decision-making.</p>
+            <p>AI Engineer with hands-on experience in LLMs, LangChain/LangGraph, and Retrieval-Augmented Generation (RAG) systems.
+Proficient in Python, FastAPI, and vector databases (Pinecone, FAISS, Chroma). Experienced in building and deploying scalable AI applications, prompt engineering, and integrating cloud-based solutions (AWS)</p>
         </section>
 
         <section id="work">
             <h2>Work Experience</h2>
             <div class="timeline">
                 <div class="timeline-item">
+                    <h3>AI ENGINEER</h3>
+                    <p>GrantU, Chennai, Tamil Nadu<br>Feb 2025 - Present</p>
+                    <p>Part-Time</p>
+                </div>
+                <div class="timeline-item">
                     <h3>Database Administrator</h3>
-                    <p>Prince Capital, Chennai, Tamil Nadu<br>Oct 2022 - Mar 2025</p>
+                    <p>Prince Capital, Chennai, Tamil Nadu<br>Oct 2023 - Mar 2025</p>
+                    <p>Full-Time</p>
                 </div>
                 <div class="timeline-item">
                     <h3>AI Intern</h3>
                     <p>Recursive Meta, Remote<br>Jul 2024 - Nov 2024</p>
+                    <p>Part-Time</p>
                 </div>
                 <div class="timeline-item">
                     <h3>Quality Control Chemist</h3>
-                    <p>Sharmagha Bio Fuels, Erode, Tamil Nadu<br>Nov 2020 - Feb 2022</p>
+                    <p>Sharmagha Bio Fuels, Erode, Tamil Nadu<br>Sep 2020 - Feb 2022</p>
+                    <p>Full-Time</p>
                 </div>
             </div>
         </section>
@@ -578,6 +615,12 @@
         <section id="projects">
             <h2>Projects</h2>
             <div class="projects-grid">
+                <div>
+                    <a href="https://github.com/kavyaa-tech/LumineSkin-AI-Skincare-Assitant" target="_blank">
+                        <img src="ragchatbot.png" alt="LumineSkin" class="project-item">
+                        <p>LumineSkin AI Skincare Assistant-RAG Chatbot</p>
+                    </a>
+                </div>
                 <div>
                     <a href="https://github.com/kavyaa-tech/Bhasavidvamsu" target="_blank">
                         <img src="bhasha.png" alt="Bhasavidvamsu" class="project-item">
@@ -613,25 +656,39 @@
 
         <section id="skills">
             <h2>Skills</h2>
-            <div class="skill-item">
-                <span>SQL</span>
-                <div class="skill-bar"><div class="skill-fill" style="width: 95%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <span>Python</span>
-                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <span>Excel</span>
-                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <span>Power BI</span>
-                <div class="skill-bar"><div class="skill-fill" style="width: 85%;"></div></div>
-            </div>
-            <div class="skill-item">
-                <span>AWS (S3, RDS, EC2, etc.)</span>
-                <div class="skill-bar"><div class="skill-fill" style="width: 65%;"></div></div>
+            <div class="skills-wrapper">
+                <div class="skill-box">
+                    <h3>Languages</h3>
+                    <p>Python, SQL</p>
+                </div>
+                <div class="skill-box">
+                    <h3>AI/ML Frameworks</h3>
+                    <p>TensorFlow, PyTorch, Scikit-learn, Pandas, Numpy, Vanna AI, LangChain, LangGraph, LangSmith</p>
+                </div>
+                <div class="skill-box">
+                    <h3>NLP & LLM</h3>
+                    <p>Hugging Face Transformers, spaCy, Llama, BERT, RAG, Prompt Engineering, Knowledge Graphs</p>
+                </div>
+                <div class="skill-box">
+                    <h3>AI Agents & Automation Frameworks</h3>
+                    <p>n8n, CrewAI, SmolAgents, AutoGen, LangFlow, AGNO, LlamaIndex</p>
+                </div>
+                <div class="skill-box">
+                    <h3>API Development</h3>
+                    <p>FastAPI, Flask, REST APIs</p>
+                </div>
+                <div class="skill-box">
+                    <h3>Databases</h3>
+                    <p>PostgreSQL, MySQL, SQL Server, Chroma, Pinecone, FAISS</p>
+                </div>
+                <div class="skill-box">
+                    <h3>Cloud & DevOps</h3>
+                    <p>AWS, Docker</p>
+                </div>
+                <div class="skill-box">
+                    <h3>ML/AI Concepts & Techniques</h3>
+                    <p>Deep Learning, CNNs, RNNs, Transformers, Attention, Hyperparameter Tuning, Semantic Search, Model Fine-Tuning, Feature Engineering</p>
+                </div>
             </div>
         </section>
 
@@ -689,10 +746,9 @@
             <h2>Contact Me</h2>
             <div class="contact">
                 <p>Email: <a href="mailto:kavya.selvaraj00@gmail.com">kavya.selvaraj00@gmail.com</a></p>
-                <p>Phone: <a href="tel:+916382062123">+916382062123</a></p>
                 <p>GitHub: <a href="https://github.com/kavyaa-tech" target="_blank">github.com/kavyaa-tech</a></p>
                 <p>LinkedIn: <a href="https://www.linkedin.com/in/kavya-data-dataprofessional" target="_blank">linkedin.com/in/kavya-data-dataprofessional</a></p>
-                <a href="Kavya_DataAnalyst.pdf" download class="resume-button">Download Resume</a>
+                <!-- <a href="Kavya_AI_Engineer.pdf" download class="resume-button">Download Resume</a> -->
             </div>
         </section>
     </div>
